@@ -1,5 +1,5 @@
 {
-  "root":         "i18n",
+  "root":         "ng-services-i18n",
   "sourceRoot":   "src",
   "projectType":  "library",
   "prefix":       "sl",
