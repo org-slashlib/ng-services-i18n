@@ -1,0 +1,27 @@
+{
+  "name": "@org.slashlib/ng-services-i18n",
+  "version": "0.1.0",
+  "description": "i18n service for angular6/7",
+  "author": "Dirk Brenckmann <db.developer@gmx.de>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.15.1"
+  },
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/org-slashlib/ng-services-i18n.git"
+  },
+  "keywords": [
+    "angular6",
+    "angular7",
+    "i18n"
+  ],
+  "bugs": {
+    "url": "https://github.com/org-slashlib/ng-services-i18n/issues"
+  },
+  "homepage": "https://github.com/org-slashlib/ng-services-i18n#readme"
+}
