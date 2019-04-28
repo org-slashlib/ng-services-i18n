@@ -17,4 +17,4 @@ This guide assumes, that you are familiar with the use of npm.
 * Download or fork this project and link it into the templates subfolder.
 * Run: <code> grunt </code>
 * Change to build directory: <code> cd build </code>
-* Call <code> angular build </code>
+* Call <code> ng build </code>
