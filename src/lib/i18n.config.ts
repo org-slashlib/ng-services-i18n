@@ -1,7 +1,9 @@
 /**
- *  © 2019, encrypt-it.org.
+ *  © 2019, slashlib.org.
  */
 import { Inject }                   from "@angular/core";
+
+import * as helper                  from "./helper";
 
 export interface II18nConfigData {
   translations: any;
@@ -14,8 +16,8 @@ class I18nConfigData implements II18nConfigData {
   /**
    *  Constructor
    *
-   *  @param  {II18nConfigData|null} configuration values.
-   *  @param  {string|null} language setting.
+   *  @param config values.
+   *  @param language setting.
    */
   constructor( config: II18nConfigData | null, language: string ) {
     this._config   = config;
@@ -68,7 +70,8 @@ export class I18nConfig {
   /**
    *  Constructor
    *
-   *  @param  {II18nConfigData|null} configuration values.
+   *  @param config values.
+   *  @param language setting.
    */
   constructor( config: II18nConfigData | null, language: string ) {
     this._config = new I18nConfigData( config, language );

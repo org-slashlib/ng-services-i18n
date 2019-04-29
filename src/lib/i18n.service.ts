@@ -1,10 +1,10 @@
 /**
- *  © 2019, encrypt-it.org.
+ *  © 2019, slashlib.org.
  */
 import { Injectable }               from "@angular/core";
 import { PipeTransform }            from "@angular/core";
 
-import { ErrorService }             from "../error.service";
+import { SyncLoggingService }       from "@org.slashlib/ng-services-core";
 
 
 @Injectable()
@@ -13,9 +13,9 @@ export class I18nService implements PipeTransform {
   /**
    *  Constructor
    */
-  constructor( protected errorservice:  ErrorService ) {}
+  constructor( protected synclogservice:  SyncLoggingService ) {}
   /**
-   *  @return {string}  browser language
+   *  @return browser language
    */
   get language(): string {
     if ( ! this._language ) {

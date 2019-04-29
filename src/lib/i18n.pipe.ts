@@ -1,5 +1,5 @@
 /**
- *  © 2019, encrypt-it.org.
+ *  © 2019, slashlib.org.
  */
 import { Injectable }               from "@angular/core";
 import { Pipe }                     from "@angular/core";
