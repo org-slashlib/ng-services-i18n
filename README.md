@@ -18,3 +18,5 @@ This guide assumes, that you are familiar with the use of npm.
 * Run: <code> grunt </code>
 * Change to build directory: <code> cd build </code>
 * Call <code> ng build </code>
+* Change to dist diectory: <code> npm pack </code>
+* <code> npm install path/to/@org.slashlib-ng-services-i18n-<version>.tgz</code>
