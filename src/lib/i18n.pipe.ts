@@ -24,11 +24,11 @@ export class I18nPipe implements PipeTransform {
   constructor( protected i18nsvc: I18nService ){ }
   /**
    *  Implementation of the PipeTransform interface's transform method.
+   *  Check if a translation is configured for value. If not return
+   *  default translation from i18n service.
    */
   transform( value: string, config: I18nConfig|null, ...args: any[]): string {
-    if ( config ) {
-         return config.transform( value, ...args );
-    }
-    else return this.i18nsvc.transform( value, ...args );
+    let transformation: string = ( ! config ) ? null : config.transform( value, ...args );
+    return ( transformation ) ? transformation : this.i18nsvc.transform( value, ...args );
   }
 }

@@ -3,6 +3,7 @@
  */
 import { NgModule }                 from "@angular/core";
 
+import "./helper";
 import { I18nPipe }                 from "./i18n.pipe";
 
 

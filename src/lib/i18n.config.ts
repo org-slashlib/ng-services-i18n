@@ -5,27 +5,56 @@ import { Inject }                   from "@angular/core";
 
 import * as helper                  from "./helper";
 
-export interface II18nConfigData {
-  translations: any;
+/**
+ *  let translations: ITranslations = {
+ *    "translate me": { translation: "übersetze mich" }
+ *  }
+ */
+export interface ITranslations {
+  [ key: string ] : { translation?: string, [key: string]: string };
 }
 
+/**
+ *  let languages: ILanguages = {
+ *    "de-DE": ITranslations,
+ *    "en-US": ITranslations
+ *  }
+ */
+export interface ILanguages {
+  [ language: string ] : ITranslations;
+}
+
+/**
+ *  Interface required for translation handling.
+ */
+export interface II18nConfigData {
+  // have a mapping of language identifiers to translations(ets)
+  readonly languages: ILanguages;
+  /**
+   *  Lookup the translation registered with key for the given language.
+   *  This will return the raw value. No formatting, no modifications.
+   *  Returns null if no translation is registered or language is unknown.
+   */
+  translate?: ( key: string, language: string ) => string;
+}
+
+/**
+ *  Internal class for handling translation files.
+ *  Currently the following formats are supported:
+ *
+ *  - extended mozilla i18n.
+ *    https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Internationalization
+ *    extended means, message.json contains the _locales structure (all languages in one file)
+ */
 class I18nConfigData implements II18nConfigData {
-  private _config:      II18nConfigData;
-  private _language:    string;
-  private _translation: any;
+  public static readonly DEFAULTLANGUAGE = "en-US";
+  private _translations:  ITranslations;
   /**
    *  Constructor
    *
    *  @param config values.
-   *  @param language setting.
    */
-  constructor( config: II18nConfigData | null, language: string ) {
-    this._config   = config;
-    this._language = language;
-  }
-  public get language(): string {
-    return this._language;
-  }
+  constructor( private readonly config: II18nConfigData | null ) { }
   /**
    *  Returns an object, which holds all available translations.
    *  Exampe:
@@ -34,14 +63,11 @@ class I18nConfigData implements II18nConfigData {
    *    "en-US": { ... }
    *  }
    */
-  public get translations(): any {
-    var translations: any;
-    if ( ! this._config ) {
-         translations = {};
+  public get languages(): ILanguages {
+    if ( ! this.config ) {
+         return {};
     }
-    else translations = this._config.translations;
-    // console.log( `==> I18nConfigData::translations - translations '${JSON.stringify(translations)}'` );
-    return translations;
+    else return this.config.languages;
   }
   /**
    *  Returns an object, which holds the translation matching
@@ -55,18 +81,33 @@ class I18nConfigData implements II18nConfigData {
    *    }
    *  }
    */
-  public get translation(): any {
-    if ( ! this._translation ) {
-         // this._translation must not be null
-         this._translation = this.translations[ this._language ] || { };
-         // console.log( `==> I18nConfigData::translation - translation '${JSON.stringify(this._translation)}'` );
+  public translations( language: string ): ITranslations {
+    if ( ! this._translations ) {
+         let lang = language ? language : I18nConfigData.DEFAULTLANGUAGE;
+         // return empty map of translations instead of null
+         this._translations = this.languages[ lang ] || { };
     }
-    return this._translation;
+    return this._translations;
+  }
+  /**
+   *  Lookup the translation registered with key for the given language.
+   *  This will return the raw value. No formatting, no modifications.
+   *  Returns null if no translation is registered.
+   */
+  public translate( key: string, language: string ): string {
+    if ( this.config.translate ) {
+         return this.config.translate( key, language );
+    }
+    else {
+         let translation: any = this.translations( language )[ key ];
+         return translation ? translation.message : null;
+    }
   }
 }
 
 export class I18nConfig {
-  private _config: I18nConfigData;
+  private readonly configdata: I18nConfigData;
+  private _language: string;
   /**
    *  Constructor
    *
@@ -74,17 +115,23 @@ export class I18nConfig {
    *  @param language setting.
    */
   constructor( config: II18nConfigData | null, language: string ) {
-    this._config = new I18nConfigData( config, language );
+    this.configdata = new I18nConfigData( config );
+    this._language  = language;
   }
-  public get config(): I18nConfigData { return this._config; }
+  /**
+   *  Get access to configured language
+   */
+  public get language(): string { return this._language; }
+  /**
+   *  Enable language switching.
+   */
+  public set language( language: string ) { this._language = language; }
   /**
    *  Implementation of the PipeTransform interface's transform method.
    */
   transform( value: string, ...args: any[]): string {
-    // console.log( `==> I18nConfig::transform - value '${value}'` );
-    let translation: any = this._config.translation[ value ];
-    let message:  string = translation ? translation.message : null;
-    // console.log( `==> I18nConfig::transform - message '${message}'` );
-    return ( ! message ) ? value.format( ...args ) : message.format( ...args );
+    if ( ! value ) { return ""; }
+    let message: string = this.configdata.translate( value, this._language );
+    return ( ! message ) ? null : message.format( ...args );
   }
 }
