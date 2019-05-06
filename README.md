@@ -54,7 +54,7 @@ import { I18nConfig }                 from "@org.slashlib/ng-services-i18n";
 import { I18nPipe }                   from "@org.slashlib/ng-services-i18n";
 import { I18nService }                from "@org.slashlib/ng-services-i18n";
 
-import TRANSLATIONS                   from "./component.messages.json";
+import LANGUAGES                      from "./component.messages.json";
 
 @Component({
   selector:     "some-selector",
@@ -63,7 +63,7 @@ import TRANSLATIONS                   from "./component.messages.json";
 export class SomeComponent {
   protected readonly i18nconfig: I18nConfig;
   constructor( private readonly i18nsvc I18nService, private readonly i18npipe I18nPipe ) {
-    this.i18nconfig = new I18nConfig({ translations: TRANSLATIONS }, this.i18nsvc.language );
+    this.i18nconfig = new I18nConfig({ languages: LANGUAGES }, this.i18nsvc.language );
   }
   // just in case the component code contains strings, that need translation  
   public translate( message: string, ...args: any[] ): string {
