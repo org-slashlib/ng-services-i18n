@@ -18,11 +18,11 @@ Provides dynamic translation for angular6/7 projects. Formats supported so far:
 This guide assumes, that you are familiar with the use of npm.  
 
 Either<br />
-download/build <code>org.slashlib-ng-services-core-&lt;version&gt;.tgz</code><br />
-and install <code> npm install path/to/@org.slashlib-ng-services-core-&lt;version&gt;.tgz</code><br />
+download/build <code>org.slashlib-ng-services-i18n-&lt;version&gt;.tgz</code><br />
+and install <code> npm install path/to/@org.slashlib-ng-services-i18n-&lt;version&gt;.tgz</code><br />
 <br />
 or<br/>
-<code>npm install @org.slashlib/ng-services-core --save-dev</code>
+<code>npm install @org.slashlib/ng-services-i18n --save-dev</code>
 
 ## usage ##
 
