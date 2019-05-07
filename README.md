@@ -33,6 +33,14 @@ import { SyncLoggingService }         from "@org.slashlib/ng-services-core";
 import { I18nModule }                 from "@org.slashlib/ng-services-i18n";
 import { I18nService }                from "@org.slashlib/ng-services-i18n";
 
+// optional "fallback" translations
+import { AbstractI18nConfigData }     from "@org.slashlib/ng-services-i18n";
+import LANGUAGES                      from "./app.messages.json";
+
+let i18nDataFactory = function(): any {
+  return { languages: LANGUAGES };
+}
+
 @NgModule({
   imports:      [ ... ],
   declarations: [
@@ -40,6 +48,7 @@ import { I18nService }                from "@org.slashlib/ng-services-i18n";
   ],
   providers:    [
     SyncLoggingService,       // service for synchronous logging
+    { provide: AbstractI18nConfigData, useFactory: i18nDataFactory }, // optional
     I18nService               // translationservice
   ],
   bootstrap:    [ ... ]
@@ -89,4 +98,32 @@ The components html might look like:
 <!-- same using a parameter -->
 <p>{ "some {0} text" | i18n:i18nconfig:"other" }</p>
 <!-- TODO: plurals :-) -->
+```
+
+The app.messages.json<br />
+<p>Note:<br />
+   "en-US" is not required as requested keys like "some text" will be returned as translation, if they can't be found.
+   Parameters that have been passed to the translation will properly replace the keys parameters {0}, {1}, ...
+</p>
+
+```json
+{
+  "de-DE": {
+    "some text": {
+      "message":  "Ein Text"
+    },
+    "some {0} text": {
+      "message":  "Ein {0} Text"
+    }
+  },
+  "en-US": {
+    "some text": {
+      "message":  "some text"
+    },
+    "some {0} text": {
+      "message":  "some {0} text"
+    }
+  }
+}
+
 ```
