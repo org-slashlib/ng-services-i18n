@@ -12,7 +12,7 @@ import * as helper                  from "./helper";
  *  }
  */
 export interface ITranslations {
-  [ key: string ] : { translation?: string, [key: string]: string };
+  [ key: string ] : { translation?: string, [ key: string ]: string };
 }
 
 /**
@@ -58,6 +58,7 @@ export class AbstractI18nConfigData implements II18nConfigData {
 class I18nConfigData implements II18nConfigData {
   public static readonly DEFAULTLANGUAGE = "en-US";
   private _translations:  ITranslations;
+  private _language: string;
   /**
    *  Constructor
    *
@@ -91,10 +92,26 @@ class I18nConfigData implements II18nConfigData {
    *  }
    */
   public translations( language: string ): ITranslations {
-    if ( ! this._translations ) {
-         let lang = language ? language : I18nConfigData.DEFAULTLANGUAGE;
-         // return empty map of translations instead of null
-         this._translations = this.languages[ lang ] || { };
+    // make sure language exists
+    language = language ? language : I18nConfigData.DEFAULTLANGUAGE;
+    if (( ! this._translations ) ||
+        ( this._language !== language )) {
+          this._language = language;
+          this._translations = this.languages[ this._language ];
+          if ( ! this._translations ) {
+               // this._language contains a key which does not directly match a language
+               let regex = new RegExp( "^([a-z]{2})" ); // "en-US" => en, "de-DE" => "de"
+               let match = regex.exec( this._language );
+               let lang  = ( ! match ) ? null : match[1];
+               this._translations = { };
+               for ( let property in  this.languages ) {
+                     if ( property.startsWith( lang )) {
+                          this._translations = this.languages[ property ];
+                          this.languages[ this._language ] = this._translations;
+                          break;
+                     }
+               }
+          }
     }
     return this._translations;
   }
@@ -104,13 +121,12 @@ class I18nConfigData implements II18nConfigData {
    *  Returns null if no translation is registered.
    */
   public translate( key: string, language: string ): string {
-    if ( this.config.translate ) {
-         return this.config.translate( key, language );
-    }
-    else {
+    if ( ! this.config.translate ) {
          let translation: any = this.translations( language )[ key ];
          return translation ? translation.message : null;
+
     }
+    else return this.config.translate( key, language );
   }
 }
 

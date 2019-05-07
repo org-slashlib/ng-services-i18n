@@ -23,6 +23,8 @@ import { AbstractI18nConfigData }   from "./i18n.config";
 export class I18nService implements PipeTransform {
   private config :I18nConfig
   private _language: string;
+  private _preferred: string;
+  private _accepted: Array<string>;
   /**
    *  Constructor
    */
@@ -30,7 +32,7 @@ export class I18nService implements PipeTransform {
                protected synclogservice:  SyncLoggingService,
                @Optional() configdata: AbstractI18nConfigData ) {
     if ( configdata ) {
-         this.config = new I18nConfig( configdata, this.language );
+         this.config = new I18nConfig( configdata, this.preferred );
     }
   }
   /**
@@ -42,12 +44,35 @@ export class I18nService implements PipeTransform {
    */
   get language(): string {
     if ( ! this._language ) {
-         if ( window.navigator.language ) {
-              this._language = window.navigator.language;
-         }
-         else this._language = window.navigator.userLanguage || "en-US";
+         this._language = window.navigator.language     ||
+                          window.navigator.userLanguage ||
+                          this.locale || "en-US";
     }
     return this._language;
+  }
+  /**
+   *  Returns the preferred language.
+   */
+  get preferred(): string {
+    if ( ! this._preferred ) {
+         this._preferred = this.accepted[0];
+    }
+    return this._preferred;
+  }
+  /**
+   *  Returns the accepted languages.
+   */
+  get accepted(): Array<string> {
+    if ( ! this._accepted ) {
+         if ( window.navigator.languages ) {
+              this._accepted = Array.from( window.navigator.languages );
+         }
+         else this._accepted = [];
+         if ( this._accepted.length < 1 ) {
+              this._accepted.push( this.language );
+         }
+    }
+    return this._accepted;
   }
   /**
    *

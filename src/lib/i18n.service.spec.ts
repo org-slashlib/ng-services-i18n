@@ -99,6 +99,43 @@ describe( "i18n: I18nService", () => {
   });
 
   describe( "testing on completeness", () => {
+
+    it( "I18nService::locale - member should exist", () => {
+        console.log( `locale: '${ i18nservice.locale }'` );
+        // instance method must not be undefined
+        expect( i18nservice.locale ).toBeDefined();
+        // instance method must not be null.
+        // be aware that undefined is not null.. see test above.
+        expect( i18nservice.locale ).not.toBeNull();
+    });
+
+    it( "I18nService::language - member should exist", () => {
+        console.log( `language: '${ i18nservice.language }'` );
+        // instance method must not be undefined
+        expect( i18nservice.language ).toBeDefined();
+        // instance method must not be null.
+        // be aware that undefined is not null.. see test above.
+        expect( i18nservice.language ).not.toBeNull();
+    });
+
+    it( "I18nService::preferred - member should exist", () => {
+        console.log( `preferred: '${ i18nservice.preferred }'` );
+        // instance method must not be undefined
+        expect( i18nservice.preferred ).toBeDefined();
+        // instance method must not be null.
+        // be aware that undefined is not null.. see test above.
+        expect( i18nservice.preferred ).not.toBeNull();
+    });
+
+    it( "I18nService::accepted - member should exist", () => {
+        console.log( `accepted: '${ i18nservice.accepted }'` );
+        // instance method must not be undefined
+        expect( i18nservice.accepted ).toBeDefined();
+        // instance method must not be null.
+        // be aware that undefined is not null.. see test above.
+        expect( i18nservice.accepted ).not.toBeNull();
+    });
+
     it( "I18nService::transform - method should exist", () => {
         // instance method must not be undefined
         expect( i18nservice.transform ).toBeDefined();
@@ -109,15 +146,19 @@ describe( "i18n: I18nService", () => {
   });
 
   describe( "functional testing", () => {
-    it( "I18nService::locale", () => {
+    it( `I18nService::locale - expects: '${ LOCALE_DE }'`, () => {
         expect( i18nservice.locale ).toEqual( LOCALE_DE );
     });
 
-    it( "I18nService::transform - translate 'cancel' => de => 'cancel'", () => {
+    // it( "I18nService::language", () => { });
+    // it( "I18nService::preferred", () => { });
+    // it( "I18nService::accepted", () => { });
+
+    it( `I18nService::transform - translate 'cancel' => ${ LOCALE_DE } => 'cancel'`, () => {
         expect( i18nservice.transform( "cancel" )).toEqual( "cancel" );
     });
 
-    it( `I18nService::transform - translate 'CANCEL' => de => '${ DE_CANCEL }'`, () => {
+    it( `I18nService::transform - translate 'CANCEL' => ${ LOCALE_DE } => '${ DE_CANCEL }'`, () => {
         expect( i18nservice.transform( "CANCEL" )).toEqual( DE_CANCEL );
     });
   });

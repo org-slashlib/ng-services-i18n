@@ -6,14 +6,14 @@ import "./helper";
 import { I18nConfig }             from "./i18n.config";
 import { II18nConfigData }        from "./i18n.config";
 
-const DE:         string = "de-DE";
+const LOCALE_DE:  string = "de-DE";
+const DE:         string = "de";
 const DE_OK:      string = "Ok";
 const DE_CANCEL:  string = "Abbrechen";
 const US_OK:      string = "ok";
 const US_CANCEL:  string = "cancel";
 
 describe( "i18n: I18nConfig", () => {
-  let language:   string;
   let i18nconfig: I18nConfig;
   let i18ndata:   II18nConfigData;
 
@@ -21,7 +21,6 @@ describe( "i18n: I18nConfig", () => {
    *  mockup
    */
   beforeAll(() => {
-    language   = DE;
     i18ndata   = {
                    "languages": {
                      "de-DE": {
@@ -48,7 +47,7 @@ describe( "i18n: I18nConfig", () => {
                      }
                    }
                  };
-    i18nconfig = new I18nConfig( i18ndata, language );
+    i18nconfig = new I18nConfig( i18ndata, LOCALE_DE );
   });
 
   describe( "testing mockups", () => {
@@ -91,22 +90,42 @@ describe( "i18n: I18nConfig", () => {
   });
 
   describe( "functional testing", () => {
-    it( "I18nConfig - translate 'cancel' => de => null", () => {
+    it( `I18nConfig - translate 'cancel' => ${ LOCALE_DE } => null`, () => {
+        i18nconfig.language = LOCALE_DE;
+        expect( i18nconfig.transform( "cancel" )).toBeNull();
+    });
+
+    it( `I18nConfig - translate 'cancel' => ${ DE } => null`, () => {
         i18nconfig.language = DE;
         expect( i18nconfig.transform( "cancel" )).toBeNull();
     });
 
-    it( `I18nConfig - translate 'CANCEL' => de => '${ DE_CANCEL }'`, () => {
+    it( `I18nConfig - translate 'CANCEL' => ${ LOCALE_DE } => '${ DE_CANCEL }'`, () => {
+        i18nconfig.language = LOCALE_DE;
+        expect( i18nconfig.transform( "CANCEL" )).toEqual( DE_CANCEL );
+    });
+
+    it( `I18nConfig - translate 'CANCEL' => ${ DE } => '${ DE_CANCEL }'`, () => {
         i18nconfig.language = DE;
         expect( i18nconfig.transform( "CANCEL" )).toEqual( DE_CANCEL );
     });
 
-    it( "I18nConfig - translate something with formatted content => translation", () => {
+    it( `I18nConfig - translate something with formatted content => ${ LOCALE_DE } => translation`, () => {
+        i18nconfig.language = LOCALE_DE;
+        expect( i18nconfig.transform( "TEST WITH FORMATTED CONTENT: '{0}'", "Inhalt" )).toEqual( "Test mit formatiertem 'Inhalt'" );
+    });
+
+    it( `I18nConfig - translate something with formatted content => ${ DE } => translation`, () => {
         i18nconfig.language = DE;
         expect( i18nconfig.transform( "TEST WITH FORMATTED CONTENT: '{0}'", "Inhalt" )).toEqual( "Test mit formatiertem 'Inhalt'" );
     });
 
-    it( "I18nConfig - translate otherthing with formatted content => null", () => {
+    it( `I18nConfig - translate otherthing with formatted content => ${ LOCALE_DE } => null`, () => {
+        i18nconfig.language = LOCALE_DE;
+        expect( i18nconfig.transform( "OTHER TEST WITH FORMATTED CONTENT: '{0}'", "Inhalt" )).toBeNull();
+    });
+
+    it( `I18nConfig - translate otherthing with formatted content => ${ DE } => null`, () => {
         i18nconfig.language = DE;
         expect( i18nconfig.transform( "OTHER TEST WITH FORMATTED CONTENT: '{0}'", "Inhalt" )).toBeNull();
     });

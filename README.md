@@ -72,7 +72,7 @@ import LANGUAGES                      from "./component.messages.json";
 export class SomeComponent {
   protected readonly i18nconfig: I18nConfig;
   constructor( private readonly i18nsvc I18nService, private readonly i18npipe I18nPipe ) {
-    this.i18nconfig = new I18nConfig({ languages: LANGUAGES }, this.i18nsvc.language );
+    this.i18nconfig = new I18nConfig({ languages: LANGUAGES }, this.i18nsvc.preferred );
   }
   // just in case the component code contains strings, that need translation  
   public translate( message: string, ...args: any[] ): string {
