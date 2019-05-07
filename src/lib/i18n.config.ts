@@ -2,6 +2,7 @@
  *  © 2019, slashlib.org.
  */
 import { Inject }                   from "@angular/core";
+import { Injectable }               from "@angular/core";
 
 import * as helper                  from "./helper";
 
@@ -29,13 +30,21 @@ export interface ILanguages {
  */
 export interface II18nConfigData {
   // have a mapping of language identifiers to translations(ets)
-  readonly languages: ILanguages;
+  languages: ILanguages;
   /**
    *  Lookup the translation registered with key for the given language.
    *  This will return the raw value. No formatting, no modifications.
    *  Returns null if no translation is registered or language is unknown.
    */
   translate?: ( key: string, language: string ) => string;
+}
+
+/**
+ *  Have a configdata class we can inject.
+ */
+@Injectable()
+export class AbstractI18nConfigData implements II18nConfigData {
+  languages: ILanguages = null;
 }
 
 /**

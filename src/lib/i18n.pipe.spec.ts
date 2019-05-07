@@ -25,7 +25,7 @@ describe( "i18n: I18nPipe", () => {
     TestBed.configureTestingModule({
       providers: [{ provide: LOCALE_ID, useValue: LOCALE_DE }, SyncLoggingService ]
     });
-    i18nservice = new I18nService( TestBed.get( LOCALE_ID ), TestBed.get( SyncLoggingService ));
+    i18nservice = new I18nService( TestBed.get( LOCALE_ID ), TestBed.get( SyncLoggingService ), null );
     i18npipe    = new I18nPipe( i18nservice );
   });
 

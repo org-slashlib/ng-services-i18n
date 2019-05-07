@@ -1,6 +1,6 @@
 {
   "name": "@org.slashlib/ng-services-i18n",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "slashlib.org i18n service for angular6/7",
   "author": "Dirk Brenckmann <db.developer@gmx.de>",
   "license": "MIT",
