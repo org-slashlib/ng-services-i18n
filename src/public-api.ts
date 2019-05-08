@@ -1,5 +1,6 @@
-/*
- * Public API Surface of i18n
+/**
+ *  © 2019, slashlib.org.
+ *  Public API Surface of ng-services-i18n
  */
 export   *                          from "./lib/i18n.module";
 export { I18nConfig }               from "./lib/i18n.config";
